@@ -1,0 +1,41 @@
+.board-container {
+    font-family: Arial, sans-serif;
+    color: white;
+    padding: 20px;
+    background-color: #3b3b3b;;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    width: 720px;
+    margin: 10px;
+}
+
+.board-container p {
+    margin: 5px 0;
+}
+
+p strong{
+ color:  #f75050; 
+}
+
+button {
+    margin-top: 10px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #f75050; /* LinkedIn Blue */
+    color: white;
+    cursor: pointer;
+}
+
+button:hover {
+    opacity: 0.8;
+    background-color: rgb(162, 78, 78);
+}
+
+.back-button {
+    background-color: #333; /* GitHub Dark */
+}
+
+.back-button:hover {
+    background-color: #333; /* GitHub Dark */
+}
