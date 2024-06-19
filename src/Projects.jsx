@@ -24,7 +24,7 @@ const Projects = ({ goBack }) => {
                     </li>
                 ))}
             </ul>
-            <button onClick={goBack} className="back-button">Exit</button>
+            <button onClick={goBack} className="back-button">Back</button>
         </div>
     );
 };

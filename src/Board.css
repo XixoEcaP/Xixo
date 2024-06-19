@@ -13,8 +13,8 @@
     margin: 5px 0;
 }
 
-p strong{
- color:  #f75050; 
+p strong {
+    color: #f75050; 
 }
 
 button {
@@ -38,4 +38,11 @@ button:hover {
 
 .back-button:hover {
     background-color: #333; /* GitHub Dark */
+}
+
+@media (max-width: 768px) {
+    .board-container {
+        width: 90%;
+        margin: 10px auto;
+    }
 }

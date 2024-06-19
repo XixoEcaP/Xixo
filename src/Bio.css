@@ -2,37 +2,41 @@
     font-family: 'Josefin Sans', sans-serif;
     color: white;
     padding: 20px;
-    background-color: #3b3b3b;;
+    background-color: #3b3b3b;
     border: 1px solid #ccc;
     border-radius: 8px;
-    width: 720px;
+    width: 100%;
+    max-width: 720px;
     margin: 10px;
- 
 }
-#title{
-    padding-bottom: 130px;
+
+#title {
+    padding-bottom: 20px;
+    text-align: center;
 }
-.profile-photo{
+
+.profile-photo {
     transform: scale(1.2);
-    position:absolute;
-    right: 340px;
-    top: 110px;
+    position: relative;
+    margin: 0 auto;
+    display: block;
+    top: 0;
 }
 
 .buttons {
     margin: 20px 0;
+    text-align: center;
 }
 
 #linkd {
-  
     background-color: #0073b1; /* LinkedIn Blue */
-  
 }
 
-#gith{
+#gith {
     background-color: #333; /* GitHub Dark */
 }
-#gith:hover{
+
+#gith:hover {
     background-color: #333; /* GitHub Dark */
 }
 
@@ -41,8 +45,38 @@ button:hover {
 }
 
 .profile-photo {
+    
     width: 150px;
     height: 150px;
     border-radius: 50%;
     margin-top: 20px;
 }
+
+@media only screen and (max-width: 768px) {
+    .bio-container {
+        width: 100%;
+    }
+
+    .profile-photo {
+        position: static;
+        transform: scale(1);
+        margin: 0 auto;
+        display: block;
+    }
+
+    #title {
+        padding-bottom: 10px;
+    }
+
+    .buttons {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .buttons button {
+        width: 80%;
+        margin: 5px 0;
+    }
+}
+

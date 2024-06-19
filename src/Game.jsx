@@ -22,7 +22,7 @@ const walkableMap = [
     [1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 ];
 
@@ -89,6 +89,10 @@ const Game = () => {
             console.log("Key pressed:", event.key);
 
             if (showContent && event.key !== 's') return;
+
+            if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(event.key)) {
+                event.preventDefault();
+            }
 
             let newX = character.x;
             let newY = character.y;
@@ -246,13 +250,13 @@ const Game = () => {
                 <p className="press">Press "s" to exit</p>
                 <canvas id="game-canvas" ref={canvasRef} width="512" height="448"></canvas>
                 <button onClick={() => moveCharacterToTile(11, 4, 'Projects')} style={{ marginTop: '10px' }}>
-                    Go to PC 
+                    Go to PC
                 </button>
                 <button onClick={() => moveCharacterToTile(3, 6, 'Games')} style={{ marginTop: '10px' }}>
-                    Go to PS 
+                    Go to PS
                 </button>
                 <button onClick={() => moveCharacterToTile(6, 1, 'Board')} style={{ marginTop: '10px' }}>
-                    Go to Board 
+                    Go to Board
                 </button>
             </div>
             <div id="right-pane">
@@ -267,6 +271,10 @@ const Game = () => {
 };
 
 export default Game;
+
+
+
+
 
 
 

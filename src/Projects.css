@@ -7,7 +7,6 @@
     border-radius: 8px;
     width: 720px;
     margin: 10px;
-    
 }
 
 .projects-container ul {
@@ -37,7 +36,14 @@ button:hover {
 .back-button {
     background-color: #333; /* GitHub Dark */
 }
+
 .back-button:hover {
     background-color: #333; /* GitHub Dark */
 }
 
+@media (max-width: 768px) {
+    .projects-container {
+        width: 90%;
+        margin: 10px auto;
+    }
+}
