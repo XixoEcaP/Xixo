@@ -267,13 +267,13 @@ const Game = ({ disableControls }) => {
                 <p className="press">Press "s" to exit</p>
                 <canvas id="game-canvas" ref={canvasRef} width="512" height="448"></canvas>
                 <button onClick={() => moveCharacterToTile(11, 4, 'Projects')} style={{ marginTop: '10px' }}>
-                    Go to PC | View my coding projects
+                    Go to PC || View my coding projects
                 </button>
                 <button onClick={() => moveCharacterToTile(6, 1, 'Board')} style={{ marginTop: '10px' }}>
-                    Go to Board | See my professional experience and education
+                    Go to Board || See my professional experience and education
                 </button>
                 <button onClick={() => moveCharacterToTile(3, 6, 'Games')} style={{ marginTop: '10px' }}>
-                    Go to PS | Explore my game projects
+                    Go to PlayStation || Explore my game projects
                 </button>
             </div>
             <div id="right-pane">
