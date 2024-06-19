@@ -3,6 +3,7 @@ import Bio from './Bio';
 import Projects from './Projects';
 import Board from './Board';
 import Games from './Games';
+import EmailForm from './EmailForm';
 
 const tileSize = 32;
 const characterSpriteSize = { width: 32, height: 48 };
@@ -18,19 +19,20 @@ const walkableMap = [
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    [1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    [1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1],
+    [1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1],
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 ];
 
-const Game = () => {
+const Game = ({ disableControls }) => {
     const canvasRef = useRef(null);
     const audioRef = useRef(null);
     const [character, setCharacter] = useState({ x: 5, y: 5, direction: 'down', frame: 0 });
     const [showContent, setShowContent] = useState(null);
+    const [showEmailForm, setShowEmailForm] = useState(false); // New state for email form
     const [audioStarted, setAudioStarted] = useState(false);
 
     const background = new Image();
@@ -38,6 +40,12 @@ const Game = () => {
 
     const characterSprite = new Image();
     characterSprite.src = process.env.PUBLIC_URL + '/assets/kid.png';
+
+    const specialTile = new Image();
+    specialTile.src = process.env.PUBLIC_URL + '/assets/tv.png'; // Replace with actual path
+
+    const tallTile = new Image();
+    tallTile.src = process.env.PUBLIC_URL + '/assets/pc3.png'; // Replace with actual path
 
     const drawBackground = () => {
         const canvas = canvasRef.current;
@@ -61,6 +69,16 @@ const Game = () => {
     const drawMap = () => {
         const canvas = canvasRef.current;
         const context = canvas.getContext('2d');
+
+        // Draw special tile when Games component is active
+        if (showContent === 'Games') {
+            context.drawImage(specialTile, 2 * tileSize, 3 * tileSize, tileSize, tileSize);
+        }
+
+        // Draw tall tile when Projects component is active
+        if (showContent === 'Projects') {
+            context.drawImage(tallTile, 11 * tileSize, 4 * tileSize - tileSize, tileSize, tileSize * 2);
+        }
     };
 
     const update = () => {
@@ -86,7 +104,7 @@ const Game = () => {
         };
 
         const handleKeyDown = (event) => {
-            console.log("Key pressed:", event.key);
+            if (disableControls || showEmailForm) return;
 
             if (showContent && event.key !== 's') return;
 
@@ -117,7 +135,6 @@ const Game = () => {
                     newDirection = 'right';
                     break;
                 case 'a':
-                    console.log("A button pressed");
                     if (
                         isInteractive(character.x, character.y - 1) ||
                         isInteractive(character.x, character.y + 1) ||
@@ -195,7 +212,7 @@ const Game = () => {
             document.removeEventListener('keydown', startAudioOnInteraction);
             audio.pause();
         };
-    }, [character, audioStarted, showContent]);
+    }, [character, audioStarted, showContent, disableControls, showEmailForm]);
 
     const moveCharacterToTile = (targetX, targetY, content) => {
         const path = calculatePath(character.x, character.y, targetX, targetY);
@@ -250,20 +267,21 @@ const Game = () => {
                 <p className="press">Press "s" to exit</p>
                 <canvas id="game-canvas" ref={canvasRef} width="512" height="448"></canvas>
                 <button onClick={() => moveCharacterToTile(11, 4, 'Projects')} style={{ marginTop: '10px' }}>
-                    Go to PC
-                </button>
-                <button onClick={() => moveCharacterToTile(3, 6, 'Games')} style={{ marginTop: '10px' }}>
-                    Go to PS
+                    Go to PC | View my coding projects
                 </button>
                 <button onClick={() => moveCharacterToTile(6, 1, 'Board')} style={{ marginTop: '10px' }}>
-                    Go to Board
+                    Go to Board | See my professional experience and education
+                </button>
+                <button onClick={() => moveCharacterToTile(3, 6, 'Games')} style={{ marginTop: '10px' }}>
+                    Go to PS | Explore my game projects
                 </button>
             </div>
             <div id="right-pane">
                 {showContent === 'Projects' && <Projects goBack={() => setShowContent(null)} />}
                 {showContent === 'Games' && <Games goBack={() => setShowContent(null)} />}
                 {showContent === 'Board' && <Board goBack={() => setShowContent(null)} />}
-                {!showContent && <Bio />}
+                {!showContent && !showEmailForm && <Bio handleEmailClick={() => setShowEmailForm(true)} />}
+                {showEmailForm && <EmailForm handleClose={() => setShowEmailForm(false)} />}
             </div>
             <audio ref={audioRef} src={process.env.PUBLIC_URL + '/assets/music.mp3'} loop></audio>
         </div>
@@ -271,6 +289,9 @@ const Game = () => {
 };
 
 export default Game;
+
+
+
 
 
 

@@ -1,0 +1,60 @@
+.email-form-container {
+    font-family: Arial, sans-serif;
+    color: white;
+    padding: 20px;
+    background-color: #3b3b3b;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    width: 720px;
+    margin: 10px;
+}
+
+.email-form-container label {
+    display: block;
+    margin-bottom: 8px;
+}
+.email-form-container textarea {
+    height: 150px; /* Increase the height of the textarea for the message */
+}
+
+.email-form-container input,
+.email-form-container textarea {
+    width: 97.8%;
+    padding: 8px;
+  
+    margin-bottom: 16px;
+    border: none;
+    border-radius: 4px;
+}
+
+.email-form-container button {
+    margin-top: 10px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #f75050;
+    color: white;
+    cursor: pointer;
+}
+
+.email-form-container button:hover {
+    opacity: 0.8;
+}
+
+.email-form-container button[type="button"] {
+    background-color: #333;
+   
+}
+
+@media (max-width: 768px) {
+    .email-form-container {
+        width: 90%;
+        margin: 10px auto;
+        padding: 15px; 
+    }
+    .email-form-container input,
+.email-form-container textarea {
+    width: 90%;
+  
+}
+}

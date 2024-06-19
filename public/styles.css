@@ -56,15 +56,17 @@ button:hover {
     #right-pane {
         width: 100%;
         margin-top: 10px;
-        margin-left: 0; /* Remove left margin for mobile view */
+        margin-left: 0; /* Align with the game canvas */
         padding: 10px;
+        box-sizing: border-box; /* Ensure padding is included in the element's total width */
     }
 
     #game-canvas {
         width: 100%;
         height: auto;
     }
-    .press{
+
+    .press {
         color: #000;
     }
 
