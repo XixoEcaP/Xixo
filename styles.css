@@ -1,16 +1,19 @@
 body {
-    margin: 0;
-    padding: 0;
+    margin-top: 20px;
+     padding-top:  20px;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
     height: 100vh;
     background-color: #000;
 }
 
 #game-container {
     display: flex;
-    align-items: center;
+    flex-direction: row;
+    align-items: flex-start;
+    width: 100%;
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
 }
 
 #game-canvas {
@@ -33,7 +36,8 @@ button {
 button:hover {
     background-color: #ddd;
 }
-.press{
+
+.press {
     margin: -1px;
     margin-bottom: 4px;
     color: white;
@@ -41,9 +45,35 @@ button:hover {
 
 #right-pane {
     width: 800px;
-    height: 800px;
+    height: auto;
     background-color: #3b3b3b;
     overflow: auto;
     margin-left: 20px;
     padding: 20px;
+}
+
+@media only screen and (max-width: 768px) {
+    #right-pane {
+        width: 100%;
+        margin-top: 10px;
+        margin-left: 0; /* Remove left margin for mobile view */
+        padding: 10px;
+    }
+
+    #game-canvas {
+        width: 100%;
+        height: auto;
+    }
+    .press{
+        color: #000;
+    }
+
+    button {
+        margin-top: 5px;
+        padding: 8px;
+    }
+
+    .press {
+        font-size: 14px;
+    }
 }
