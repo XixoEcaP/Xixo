@@ -2,6 +2,7 @@ import React from 'react';
 import './Projects.css'; // Import the CSS file for styling
 
 const games = [
+    { name: 'PokeFootball Demo', description: 'Pokemon Football game still in production', tech: 'React,JS,HTML,CSS', link: 'https://xixoecap.github.io/PokeFootballDemo/' },
     { name: 'Bootcamp Adventure', description: 'Games week game during the bootcamp', tech: 'Java', link: 'https://xixoep.itch.io/bootcamp-adventures' },
     { name: 'GuessThePokemon', description: 'Guess the pokemon Game', tech: 'JS,HTML,CSS', link: 'https://xixoecap.github.io/GuessThePokemon/' },
 ];
