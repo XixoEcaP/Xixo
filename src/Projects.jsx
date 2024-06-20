@@ -4,7 +4,7 @@ import './Projects.css'; // Import the CSS file for styling
 const projects = [
     { name: 'Rick and Morty', description: 'Rick and Morty characters', tech: 'React,JS,HTML,CSS', link: 'https://xixoecap.github.io/Rick-Morty/' },
     { name: 'PokemonCards', description: 'Random card generator', tech: 'Vue,Vite,JS,HTML,CSS', link: 'https://xixoecap.github.io/PokemonCards/' },
-    { name: 'ReactEx', description: 'Task manager and portfolio page', tech: 'React,JS,HTML,CSS', link: 'https://xixoecap.github.io/Rick-Morty/' },
+    { name: 'ReactEx', description: 'Task manager and portfolio page', tech: 'React,JS,HTML,CSS', link: 'https://xixoecap.github.io/ReactEx/' },
     { name: 'JavaScriptEx', description: '4 Projects To-Do-List, Color Generator, Images Carousel and Spot Finder', tech: 'JS,HTML,CSS', link: 'https://xixoecap.github.io/JavaScriptEx/' },
     { name: 'Zen Masters', description: 'Web site during hackathon', tech: 'JS,HTML,CSS', link: 'https://xixoecap.github.io/ZenMasters/' },
     { name: 'Car Crash with Ambulance', description: 'Car crash exercise with a revival ambulance', tech: 'Java', link: 'https://github.com/XixoEcaP/CarCrashXixo' },
