@@ -39,7 +39,7 @@ const Board = ({ goBack }) => {
             <p>Frameworks: Bootstrap, Spring MVC, Spring Boot, Hibernate, JUnit, Mockito</p>
             <p>Libraries: React, JQuery, SimpleGraphicsGFX</p>
             <p>Others: IntelliJ, GIT, VIM, Apache Tomcat, Apache Ant, Scrum</p>
-            <button onClick={goBack} className="back-button">Back</button>
+            <button onClick={goBack} className="back-button">Exit</button>
         </div>
     );
 };

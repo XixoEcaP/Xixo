@@ -21,7 +21,7 @@ const Games = ({ goBack }) => {
                     </li>
                 ))}
             </ul>
-            <button onClick={goBack} className="back-button">Back</button>
+            <button onClick={goBack} className="back-button">Exit</button>
         </div>
     );
 };
