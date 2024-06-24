@@ -1,10 +1,13 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useMemo, useCallback } from 'react';
 import Bio from './Bio';
 import Projects from './Projects';
 import Board from './Board';
 import Games from './Games';
 import EmailForm from './EmailForm';
 import SpotifyEmbed from './SpotifyEmbed';
+import { useMusic } from './MusicProvider';
+import './App.css';
+
 
 const tileSize = 32;
 const characterSpriteSize = { width: 32, height: 48 };
@@ -28,33 +31,46 @@ const walkableMap = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 ];
 
-const Game = ({ disableControls, toggleMusic }) => {
+const Game = ({ disableControls }) => {
     const canvasRef = useRef(null);
+    const { toggleMusic } = useMusic();
     const [character, setCharacter] = useState({ x: 5, y: 5, direction: 'down', frame: 0 });
     const [showContent, setShowContent] = useState(null);
-    const [showEmailForm, setShowEmailForm] = useState(false); // New state for email form
+    const [showEmailForm, setShowEmailForm] = useState(false);
 
-    const background = new Image();
-    background.src = process.env.PUBLIC_URL + '/assets/background.png';
+    const background = useMemo(() => {
+        const img = new Image();
+        img.src = process.env.PUBLIC_URL + '/assets/background.png';
+        return img;
+    }, []);
 
-    const characterSprite = new Image();
-    characterSprite.src = process.env.PUBLIC_URL + '/assets/kid.png';
+    const characterSprite = useMemo(() => {
+        const img = new Image();
+        img.src = process.env.PUBLIC_URL + '/assets/kid.png';
+        return img;
+    }, []);
 
-    const specialTile = new Image();
-    specialTile.src = process.env.PUBLIC_URL + '/assets/tv.png'; // Replace with actual path
+    const specialTile = useMemo(() => {
+        const img = new Image();
+        img.src = process.env.PUBLIC_URL + '/assets/tv.png';
+        return img;
+    }, []);
 
-    const tallTile = new Image();
-    tallTile.src = process.env.PUBLIC_URL + '/assets/pc3.png'; // Replace with actual path
+    const tallTile = useMemo(() => {
+        const img = new Image();
+        img.src = process.env.PUBLIC_URL + '/assets/pc3.png';
+        return img;
+    }, []);
 
-    const drawBackground = () => {
+    const drawBackground = useCallback(() => {
         const canvas = canvasRef.current;
         if (canvas) {
             const context = canvas.getContext('2d');
             context.drawImage(background, 0, 0, canvas.width, canvas.height);
         }
-    };
+    }, [background]);
 
-    const drawCharacter = () => {
+    const drawCharacter = useCallback(() => {
         const canvas = canvasRef.current;
         if (canvas) {
             const context = canvas.getContext('2d');
@@ -67,9 +83,9 @@ const Game = ({ disableControls, toggleMusic }) => {
                 characterSpriteSize.width, characterSpriteSize.height
             );
         }
-    };
+    }, [character, characterSprite]);
 
-    const drawMap = () => {
+    const drawMap = useCallback(() => {
         const canvas = canvasRef.current;
         if (canvas) {
             const context = canvas.getContext('2d');
@@ -83,13 +99,10 @@ const Game = ({ disableControls, toggleMusic }) => {
             if (showContent === 'Projects') {
                 context.drawImage(tallTile, 11 * tileSize, 4 * tileSize - tileSize, tileSize, tileSize * 2);
             }
-
-            // Draw Spotify tile when SpotifyEmbed component is active
-          
         }
-    };
+    }, [showContent, specialTile, tallTile]);
 
-    const update = () => {
+    const update = useCallback(() => {
         const canvas = canvasRef.current;
         if (canvas) {
             const context = canvas.getContext('2d');
@@ -98,7 +111,7 @@ const Game = ({ disableControls, toggleMusic }) => {
             drawMap();
             drawCharacter();
         }
-    };
+    }, [drawBackground, drawCharacter, drawMap]);
 
     const isCollision = (x, y) => {
         return walkableMap[y] && (walkableMap[y][x] === 0 || walkableMap[y][x] === 2 || walkableMap[y][x] === 3 || walkableMap[y][x] === 4 || walkableMap[y][x] === 5);
@@ -109,7 +122,6 @@ const Game = ({ disableControls, toggleMusic }) => {
     };
 
     useEffect(() => {
-        const canvas = canvasRef.current;
         const handleKeyDown = (event) => {
             if (disableControls || showEmailForm) return;
 
@@ -183,7 +195,7 @@ const Game = ({ disableControls, toggleMusic }) => {
 
             if (newX !== character.x || newY !== character.y) {
                 if (!isCollision(newX, newY)) {
-                    if (newX >= 0 && newY >= 0 && newX < canvas.width / tileSize && newY < canvas.height / tileSize) {
+                    if (newX >= 0 && newY >= 0 && newX < canvasRef.current.width / tileSize && newY < canvasRef.current.height / tileSize) {
                         setCharacter({ x: newX, y: newY, direction: newDirection, frame: newFrame });
                     }
                 } else {
@@ -207,7 +219,7 @@ const Game = ({ disableControls, toggleMusic }) => {
         return () => {
             document.removeEventListener('keydown', handleKeyDown);
         };
-    }, [character, showContent, disableControls, showEmailForm]);
+    }, [character, showContent, disableControls, showEmailForm, background, characterSprite, update]);
 
     const moveCharacterToTile = (targetX, targetY, content) => {
         const path = calculatePath(character.x, character.y, targetX, targetY);
@@ -256,11 +268,10 @@ const Game = ({ disableControls, toggleMusic }) => {
     };
 
     return (
-    
         <div id="game-container">
             <div>
                 <button onClick={toggleMusic} className="music-toggle-button">
-                    <img src={`${process.env.PUBLIC_URL}/assets/music.png`} alt="Toggle Music" width="32" height="32" />
+                    <img src={`${process.env.PUBLIC_URL}/assets/music.png`} alt="Music Toggle" />
                 </button>
                 <p className="press">Press "m" to play/pause music</p>
                 <p className="press">Press "a" to interact</p>
@@ -292,6 +303,8 @@ const Game = ({ disableControls, toggleMusic }) => {
 };
 
 export default Game;
+
+
 
 
 

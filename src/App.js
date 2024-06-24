@@ -1,56 +1,47 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import Game from './Game';
 import './App.css';
+import MusicProvider, { useMusic } from './MusicProvider';
 
 const App = () => {
-    const audioRef = useRef(null);
+    const { toggleMusic } = useMusic();
+    const [hasToggledMusic, setHasToggledMusic] = useState(false);
 
     useEffect(() => {
         const handleKeyPress = (event) => {
-            if (event.key === 'm' || event.key === 'M') {
-                if (audioRef.current.paused) {
-                    audioRef.current.play();
-                } else {
-                    audioRef.current.pause();
-                }
+            if ((event.key === 'm' || event.key === 'M') && !hasToggledMusic) {
+                toggleMusic();
+                setHasToggledMusic(true);
             }
         };
 
-        const handleUserInteraction = () => {
-            if (audioRef.current.paused) {
-                audioRef.current.play();
+        const handleClick = () => {
+            if (!hasToggledMusic) {
+                toggleMusic();
+                setHasToggledMusic(true);
             }
-            window.removeEventListener('click', handleUserInteraction);
-            window.removeEventListener('keydown', handleUserInteraction);
         };
 
         window.addEventListener('keydown', handleKeyPress);
-        window.addEventListener('click', handleUserInteraction);
-        window.addEventListener('keydown', handleUserInteraction);
+        window.addEventListener('click', handleClick);
 
         return () => {
             window.removeEventListener('keydown', handleKeyPress);
-            window.removeEventListener('click', handleUserInteraction);
-            window.removeEventListener('keydown', handleUserInteraction);
+            window.removeEventListener('click', handleClick);
         };
-    }, []);
-
-    const toggleMusic = () => {
-        if (audioRef.current.paused) {
-            audioRef.current.play();
-        } else {
-            audioRef.current.pause();
-        }
-    };
+    }, [toggleMusic, hasToggledMusic]);
 
     return (
         <div id="game-container">
-            <audio ref={audioRef} src={`${process.env.PUBLIC_URL}/assets/music.mp3`} autoPlay />
-            <Game toggleMusic={toggleMusic} />
+            <Game />
         </div>
     );
 };
 
-export default App;
+const AppWrapper = () => (
+    <MusicProvider>
+        <App />
+    </MusicProvider>
+);
 
-
+export default AppWrapper;
