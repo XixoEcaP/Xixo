@@ -207,7 +207,7 @@ const Game = ({ disableControls }) => {
         return () => {
             document.removeEventListener('keydown', handleKeyDown);
         };
-    }, [character, showContent, disableControls, showEmailForm, background, characterSprite]);
+    }, [character, showContent, disableControls, showEmailForm, background, characterSprite,update]);
 
     const moveCharacterToTile = (targetX, targetY, content) => {
         const path = calculatePath(character.x, character.y, targetX, targetY);
@@ -261,7 +261,7 @@ const Game = ({ disableControls }) => {
                 <button onClick={toggleMusic} className="music-toggle-button">
                     <img src={`${process.env.PUBLIC_URL}/assets/music.png`} alt="Music Toggle" />
                 </button>
-                <p className="press">Press "m" to play/pause music</p>
+               
                 <p className="press">Press "a" to interact</p>
                 <p className="press">Press "s" to exit</p>
                 <canvas id="game-canvas" ref={canvasRef} width="512" height="448"></canvas>

@@ -9,7 +9,7 @@ const App = () => {
 
     useEffect(() => {
         const handleKeyPress = (event) => {
-            if ((event.key === 'm' || event.key === 'M') && !hasToggledMusic) {
+            if ((event.key === 'p' || event.key === 'P') && !hasToggledMusic) {
                 toggleMusic();
                 setHasToggledMusic(true);
             }
