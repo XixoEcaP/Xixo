@@ -13,7 +13,7 @@ const Bio = ({ handleEmailClick }) => {
             <div className="buttons">
                 <button id="gith" onClick={() => window.open('https://github.com/XixoEcaP', '_blank')}>GitHub</button>
                 <button id="linkd" onClick={() => window.open('https://www.linkedin.com/in/francisco-e%C3%A7a-8740b2209/', '_blank')}>LinkedIn</button>
-                <button onClick={handleEmailClick}>Email Me</button>
+                <button onClick={handleEmailClick}>Message Me</button>
             </div>
             <h2>Contact</h2>
             <p><strong>Phone:</strong> +351 91 44 33 135 </p>

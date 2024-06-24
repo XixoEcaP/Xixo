@@ -36,7 +36,7 @@ const Game = ({ disableControls }) => {
     const [character, setCharacter] = useState({ x: 5, y: 5, direction: 'down', frame: 0 });
     const [showContent, setShowContent] = useState(null);
     const [showEmailForm, setShowEmailForm] = useState(false);
-    const [hasToggledMusic, setHasToggledMusic] = useState(false);
+    const [hasStartedMusic, setHasStartedMusic] = useState(false);
 
     const background = new Image();
     background.src = process.env.PUBLIC_URL + '/assets/background.png';
@@ -180,9 +180,7 @@ const Game = ({ disableControls }) => {
                     break;
                 case 'p':
                 case 'P':
-                   
-                        toggleMusic();
-            
+                    toggleMusic();
                     break;
                 default:
                     break;
@@ -203,7 +201,16 @@ const Game = ({ disableControls }) => {
             update();
         };
 
+        const handleFirstInteraction = () => {
+            if (!hasStartedMusic) {
+                toggleMusic();
+                setHasStartedMusic(true);
+            }
+        };
+
         document.addEventListener('keydown', handleKeyDown);
+        document.addEventListener('click', handleFirstInteraction);
+        document.addEventListener('keydown', handleFirstInteraction);
 
         background.onload = () => {
             characterSprite.onload = () => {
@@ -213,8 +220,10 @@ const Game = ({ disableControls }) => {
 
         return () => {
             document.removeEventListener('keydown', handleKeyDown);
+            document.removeEventListener('click', handleFirstInteraction);
+            document.removeEventListener('keydown', handleFirstInteraction);
         };
-    }, [character, showContent, disableControls, showEmailForm, background, characterSprite, toggleMusic, hasToggledMusic, update]);
+    }, [character, showContent, disableControls, showEmailForm, background, characterSprite, toggleMusic, hasStartedMusic, update]);
 
     const moveCharacterToTile = (targetX, targetY, content) => {
         const path = calculatePath(character.x, character.y, targetX, targetY);
@@ -268,9 +277,8 @@ const Game = ({ disableControls }) => {
                 <button onClick={toggleMusic} className="music-toggle-button">
                     <img src={`${process.env.PUBLIC_URL}/assets/music.png`} alt="Music Toggle" />
                 </button>
-                <p className="press">Press "p" to play/pause music |  Press arrows to move</p>
-                <p className="press">Press "a" to interact   |     Press "s" to exit</p>
-           
+                <p className="press">Press "p" to play/pause music | Press arrows to move</p>
+                <p className="press">Press "a" to interact | Press "s" to exit</p>
                 <canvas id="game-canvas" ref={canvasRef} width="512" height="448"></canvas>
                 <button onClick={() => moveCharacterToTile(11, 4, 'Projects')} style={{ marginTop: '10px' }}>
                     Go to PC || View my coding projects
