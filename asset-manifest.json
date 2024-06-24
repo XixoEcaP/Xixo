@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/Xixo/static/css/main.79b9ff55.css",
-    "main.js": "/Xixo/static/js/main.2a7cedf8.js",
+    "main.js": "/Xixo/static/js/main.f0486d25.js",
     "index.html": "/Xixo/index.html",
     "main.79b9ff55.css.map": "/Xixo/static/css/main.79b9ff55.css.map",
-    "main.2a7cedf8.js.map": "/Xixo/static/js/main.2a7cedf8.js.map"
+    "main.f0486d25.js.map": "/Xixo/static/js/main.f0486d25.js.map"
   },
   "entrypoints": [
     "static/css/main.79b9ff55.css",
-    "static/js/main.2a7cedf8.js"
+    "static/js/main.f0486d25.js"
   ]
 }
