@@ -5,6 +5,7 @@ import Board from './Board';
 import Games from './Games';
 import EmailForm from './EmailForm';
 import SpotifyEmbed from './SpotifyEmbed';
+import { useMusic } from './MusicProvider';
 import './App.css';
 
 const tileSize = 32;
@@ -31,11 +32,10 @@ const walkableMap = [
 
 const Game = ({ disableControls }) => {
     const canvasRef = useRef(null);
-    const audioRef = useRef(null);
+    const { toggleMusic } = useMusic();
     const [character, setCharacter] = useState({ x: 5, y: 5, direction: 'down', frame: 0 });
     const [showContent, setShowContent] = useState(null);
     const [showEmailForm, setShowEmailForm] = useState(false);
-    const [audioStarted, setAudioStarted] = useState(false);
 
     const background = new Image();
     background.src = process.env.PUBLIC_URL + '/assets/background.png';
@@ -48,14 +48,6 @@ const Game = ({ disableControls }) => {
 
     const tallTile = new Image();
     tallTile.src = process.env.PUBLIC_URL + '/assets/pc3.png'; // Replace with actual path
-
-    const toggleMusic = () => {
-        if (audioRef.current.paused) {
-            audioRef.current.play();
-        } else {
-            audioRef.current.pause();
-        }
-    };
 
     const drawBackground = () => {
         const canvas = canvasRef.current;
@@ -185,9 +177,6 @@ const Game = ({ disableControls }) => {
                 case 's':
                     setShowContent(null);
                     break;
-                case 'm':
-                    toggleMusic();
-                    break;
                 default:
                     break;
             }
@@ -297,19 +286,8 @@ const Game = ({ disableControls }) => {
                 {!showContent && !showEmailForm && <Bio handleEmailClick={() => setShowEmailForm(true)} />}
                 {showEmailForm && <EmailForm handleClose={() => setShowEmailForm(false)} />}
             </div>
-            <audio ref={audioRef} src={`${process.env.PUBLIC_URL}/assets/music.mp3`} loop></audio>
         </div>
     );
 };
 
 export default Game;
-
-
-
-
-
-
-
-
-
-
