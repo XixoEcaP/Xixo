@@ -1,50 +1,42 @@
-.projects-container {
+.spotify-embed-container {
     font-family: Arial, sans-serif;
     color: white;
     padding: 20px;
-    background-color: #3b3b3b;;
+    background-color: #3b3b3b;
     border: 1px solid #ccc;
     border-radius: 8px;
     width: 720px;
+    min-height: 500px; /* Adjust the height as needed */
     margin: 10px;
 }
 
-.projects-container ul {
+.spotify-embed-container ul {
     list-style-type: none;
     padding: 0;
 }
 
-.projects-container li {
+.spotify-embed-container li {
     margin-bottom: 20px;
 }
 
-button {
+.back-button {
     margin-top: 10px;
     padding: 10px 20px;
     border: none;
     border-radius: 5px;
-    background-color: #f75050; /* LinkedIn Blue */
+    background-color: #f75050;
     color: white;
     cursor: pointer;
 }
 
-button:hover {
-    opacity: 0.8;
-    background-color: rgb(162, 78, 78);
-}
-
-.back-button {
-    background-color: #333; /* GitHub Dark */
-}
-
 .back-button:hover {
-    background-color: #333; /* GitHub Dark */
+    opacity: 0.8;
 }
 
 @media (max-width: 768px) {
-    .projects-container {
+    .spotify-embed-container {
         width: 90%;
         margin-left: -5px;
-      
+        min-height: 400px; /* Adjust the height for smaller screens as needed */
     }
 }

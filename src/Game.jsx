@@ -4,6 +4,7 @@ import Projects from './Projects';
 import Board from './Board';
 import Games from './Games';
 import EmailForm from './EmailForm';
+import SpotifyEmbed from './SpotifyEmbed';
 
 const tileSize = 32;
 const characterSpriteSize = { width: 32, height: 48 };
@@ -19,7 +20,7 @@ const walkableMap = [
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    [1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1],
+    [1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 5, 0, 1, 1],
     [1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1],
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
@@ -27,13 +28,11 @@ const walkableMap = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 ];
 
-const Game = ({ disableControls }) => {
+const Game = ({ disableControls, toggleMusic }) => {
     const canvasRef = useRef(null);
-    const audioRef = useRef(null);
     const [character, setCharacter] = useState({ x: 5, y: 5, direction: 'down', frame: 0 });
     const [showContent, setShowContent] = useState(null);
     const [showEmailForm, setShowEmailForm] = useState(false); // New state for email form
-    const [audioStarted, setAudioStarted] = useState(false);
 
     const background = new Image();
     background.src = process.env.PUBLIC_URL + '/assets/background.png';
@@ -49,60 +48,68 @@ const Game = ({ disableControls }) => {
 
     const drawBackground = () => {
         const canvas = canvasRef.current;
-        const context = canvas.getContext('2d');
-        context.drawImage(background, 0, 0, canvas.width, canvas.height);
+        if (canvas) {
+            const context = canvas.getContext('2d');
+            context.drawImage(background, 0, 0, canvas.width, canvas.height);
+        }
     };
 
     const drawCharacter = () => {
         const canvas = canvasRef.current;
-        const context = canvas.getContext('2d');
-        const { x, y, direction, frame } = character;
-        context.drawImage(
-            characterSprite,
-            frame * characterSpriteSize.width, directions[direction] * characterSpriteSize.height,
-            characterSpriteSize.width, characterSpriteSize.height,
-            x * tileSize, y * tileSize,
-            characterSpriteSize.width, characterSpriteSize.height
-        );
+        if (canvas) {
+            const context = canvas.getContext('2d');
+            const { x, y, direction, frame } = character;
+            context.drawImage(
+                characterSprite,
+                frame * characterSpriteSize.width, directions[direction] * characterSpriteSize.height,
+                characterSpriteSize.width, characterSpriteSize.height,
+                x * tileSize, y * tileSize,
+                characterSpriteSize.width, characterSpriteSize.height
+            );
+        }
     };
 
     const drawMap = () => {
         const canvas = canvasRef.current;
-        const context = canvas.getContext('2d');
+        if (canvas) {
+            const context = canvas.getContext('2d');
 
-        // Draw special tile when Games component is active
-        if (showContent === 'Games') {
-            context.drawImage(specialTile, 2 * tileSize, 3 * tileSize, tileSize, tileSize);
-        }
+            // Draw special tile when Games component is active
+            if (showContent === 'Games') {
+                context.drawImage(specialTile, 2 * tileSize, 3 * tileSize, tileSize, tileSize);
+            }
 
-        // Draw tall tile when Projects component is active
-        if (showContent === 'Projects') {
-            context.drawImage(tallTile, 11 * tileSize, 4 * tileSize - tileSize, tileSize, tileSize * 2);
+            // Draw tall tile when Projects component is active
+            if (showContent === 'Projects') {
+                context.drawImage(tallTile, 11 * tileSize, 4 * tileSize - tileSize, tileSize, tileSize * 2);
+            }
+
+            // Draw Spotify tile when SpotifyEmbed component is active
+          
         }
     };
 
     const update = () => {
         const canvas = canvasRef.current;
-        const context = canvas.getContext('2d');
-        context.clearRect(0, 0, canvas.width, canvas.height);
-        drawBackground();
-        drawMap();
-        drawCharacter();
+        if (canvas) {
+            const context = canvas.getContext('2d');
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            drawBackground();
+            drawMap();
+            drawCharacter();
+        }
+    };
+
+    const isCollision = (x, y) => {
+        return walkableMap[y] && (walkableMap[y][x] === 0 || walkableMap[y][x] === 2 || walkableMap[y][x] === 3 || walkableMap[y][x] === 4 || walkableMap[y][x] === 5);
+    };
+
+    const isInteractive = (x, y) => {
+        return walkableMap[y] && (walkableMap[y][x] === 2 || walkableMap[y][x] === 3 || walkableMap[y][x] === 4 || walkableMap[y][x] === 5);
     };
 
     useEffect(() => {
         const canvas = canvasRef.current;
-        const context = canvas.getContext('2d');
-        const audio = audioRef.current;
-
-        const isCollision = (x, y) => {
-            return walkableMap[y] && (walkableMap[y][x] === 0 || walkableMap[y][x] === 2 || walkableMap[y][x] === 3 || walkableMap[y][x] === 4);
-        };
-
-        const isInteractive = (x, y) => {
-            return walkableMap[y] && (walkableMap[y][x] === 2 || walkableMap[y][x] === 3 || walkableMap[y][x] === 4);
-        };
-
         const handleKeyDown = (event) => {
             if (disableControls || showEmailForm) return;
 
@@ -159,10 +166,15 @@ const Game = ({ disableControls }) => {
                             walkableMap[character.y]?.[character.x + 1] === 4) {
                             setShowContent('Board');
                         }
+                        if (walkableMap[character.y - 1]?.[character.x] === 5 ||
+                            walkableMap[character.y + 1]?.[character.x] === 5 ||
+                            walkableMap[character.y]?.[character.x - 1] === 5 ||
+                            walkableMap[character.y]?.[character.x + 1] === 5) {
+                            setShowContent('SpotifyEmbed');
+                        }
                     }
                     break;
                 case 's':
-                    console.log("S button pressed");
                     setShowContent(null);
                     break;
                 default:
@@ -192,27 +204,10 @@ const Game = ({ disableControls }) => {
             };
         };
 
-        const startAudioOnInteraction = () => {
-            if (!audioStarted) {
-                setAudioStarted(true);
-                audio.play().then(() => {
-                    console.log("Audio started after interaction");
-                }).catch((error) => {
-                    console.error("Audio playback failed:", error);
-                });
-            }
-        };
-
-        document.addEventListener('click', startAudioOnInteraction);
-        document.addEventListener('keydown', startAudioOnInteraction);
-
         return () => {
             document.removeEventListener('keydown', handleKeyDown);
-            document.removeEventListener('click', startAudioOnInteraction);
-            document.removeEventListener('keydown', startAudioOnInteraction);
-            audio.pause();
         };
-    }, [character, audioStarted, showContent, disableControls, showEmailForm]);
+    }, [character, showContent, disableControls, showEmailForm]);
 
     const moveCharacterToTile = (targetX, targetY, content) => {
         const path = calculatePath(character.x, character.y, targetX, targetY);
@@ -261,8 +256,13 @@ const Game = ({ disableControls }) => {
     };
 
     return (
+    
         <div id="game-container">
             <div>
+                <button onClick={toggleMusic} className="music-toggle-button">
+                    <img src={`${process.env.PUBLIC_URL}/assets/music.png`} alt="Toggle Music" width="32" height="32" />
+                </button>
+                <p className="press">Press "m" to play/pause music</p>
                 <p className="press">Press "a" to interact</p>
                 <p className="press">Press "s" to exit</p>
                 <canvas id="game-canvas" ref={canvasRef} width="512" height="448"></canvas>
@@ -275,21 +275,23 @@ const Game = ({ disableControls }) => {
                 <button onClick={() => moveCharacterToTile(3, 6, 'Games')} style={{ marginTop: '10px' }}>
                     Go to PlayStation || Explore my game projects
                 </button>
+                <button onClick={() => moveCharacterToTile(12, 11, 'SpotifyEmbed')} style={{ marginTop: '10px' }}>
+                    Go to Record Player || Listen to my music releases
+                </button>
             </div>
             <div id="right-pane">
                 {showContent === 'Projects' && <Projects goBack={() => setShowContent(null)} />}
                 {showContent === 'Games' && <Games goBack={() => setShowContent(null)} />}
                 {showContent === 'Board' && <Board goBack={() => setShowContent(null)} />}
+                {showContent === 'SpotifyEmbed' && <SpotifyEmbed goBack={() => setShowContent(null)} />}
                 {!showContent && !showEmailForm && <Bio handleEmailClick={() => setShowEmailForm(true)} />}
                 {showEmailForm && <EmailForm handleClose={() => setShowEmailForm(false)} />}
             </div>
-            <audio ref={audioRef} src={process.env.PUBLIC_URL + '/assets/music.mp3'} loop></audio>
         </div>
     );
 };
 
 export default Game;
-
 
 
 
