@@ -10,7 +10,7 @@ const SpotifyEmbed = ({ goBack }) => {
                 style={{ borderRadius: '12px' }}
                 src="https://open.spotify.com/embed/album/3oQQujaOCNyOu15aLMsIiO?utm_source=generator"
                 width="100%"
-                height="500" // Adjust the iframe height as needed
+                height="600" // Adjust the iframe height as needed
                 frameBorder="0"
                 allowFullScreen=""
                 allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
@@ -22,6 +22,7 @@ const SpotifyEmbed = ({ goBack }) => {
 };
 
 export default SpotifyEmbed;
+
 
 
 
