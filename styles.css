@@ -22,6 +22,46 @@ body {
     border: 1px solid #fff;
 }
 
+#right-pane {
+    width: 800px;
+    height: auto;
+    background-color: #3b3b3b;
+    overflow: auto;
+    margin-left: 20px;
+    padding: 20px;
+    
+}
+
+.press {
+    margin: -1px;
+    margin-bottom: 4px;
+    color: white;
+  
+}
+
+.music-toggle-button {
+    width: 32px;
+    height: 32px;
+    margin-right: 10px;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background-color: white;
+    cursor: pointer;
+    vertical-align: middle; /* Aligns the button with the text */
+}
+
+.music-toggle-button img {
+    width: 90%;
+    height: 90%;
+  
+}
+
+.music-toggle-button:hover {
+    opacity: 0.8;
+    background-color: white;
+}
+
 button {
     display: block;
     margin-top: 10px;
@@ -35,21 +75,6 @@ button {
 
 button:hover {
     background-color: #ddd;
-}
-
-.press {
-    margin: -1px;
-    margin-bottom: 4px;
-    color: white;
-}
-
-#right-pane {
-    width: 800px;
-    height: auto;
-    background-color: #3b3b3b;
-    overflow: auto;
-    margin-left: 20px;
-    padding: 20px;
 }
 
 @media only screen and (max-width: 768px) {
@@ -76,6 +101,6 @@ button:hover {
     }
 
     .press {
-        font-size: 14px;
+        font-size: 0px;
     }
 }
