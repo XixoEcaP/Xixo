@@ -1,13 +1,11 @@
-import React, { useEffect, useRef, useState, useMemo, useCallback } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Bio from './Bio';
 import Projects from './Projects';
 import Board from './Board';
 import Games from './Games';
 import EmailForm from './EmailForm';
 import SpotifyEmbed from './SpotifyEmbed';
-import { useMusic } from './MusicProvider';
 import './App.css';
-
 
 const tileSize = 32;
 const characterSpriteSize = { width: 32, height: 48 };
@@ -33,44 +31,41 @@ const walkableMap = [
 
 const Game = ({ disableControls }) => {
     const canvasRef = useRef(null);
-    const { toggleMusic } = useMusic();
+    const audioRef = useRef(null);
     const [character, setCharacter] = useState({ x: 5, y: 5, direction: 'down', frame: 0 });
     const [showContent, setShowContent] = useState(null);
     const [showEmailForm, setShowEmailForm] = useState(false);
+    const [audioStarted, setAudioStarted] = useState(false);
 
-    const background = useMemo(() => {
-        const img = new Image();
-        img.src = process.env.PUBLIC_URL + '/assets/background.png';
-        return img;
-    }, []);
+    const background = new Image();
+    background.src = process.env.PUBLIC_URL + '/assets/background.png';
 
-    const characterSprite = useMemo(() => {
-        const img = new Image();
-        img.src = process.env.PUBLIC_URL + '/assets/kid.png';
-        return img;
-    }, []);
+    const characterSprite = new Image();
+    characterSprite.src = process.env.PUBLIC_URL + '/assets/kid.png';
 
-    const specialTile = useMemo(() => {
-        const img = new Image();
-        img.src = process.env.PUBLIC_URL + '/assets/tv.png';
-        return img;
-    }, []);
+    const specialTile = new Image();
+    specialTile.src = process.env.PUBLIC_URL + '/assets/tv.png'; // Replace with actual path
 
-    const tallTile = useMemo(() => {
-        const img = new Image();
-        img.src = process.env.PUBLIC_URL + '/assets/pc3.png';
-        return img;
-    }, []);
+    const tallTile = new Image();
+    tallTile.src = process.env.PUBLIC_URL + '/assets/pc3.png'; // Replace with actual path
 
-    const drawBackground = useCallback(() => {
+    const toggleMusic = () => {
+        if (audioRef.current.paused) {
+            audioRef.current.play();
+        } else {
+            audioRef.current.pause();
+        }
+    };
+
+    const drawBackground = () => {
         const canvas = canvasRef.current;
         if (canvas) {
             const context = canvas.getContext('2d');
             context.drawImage(background, 0, 0, canvas.width, canvas.height);
         }
-    }, [background]);
+    };
 
-    const drawCharacter = useCallback(() => {
+    const drawCharacter = () => {
         const canvas = canvasRef.current;
         if (canvas) {
             const context = canvas.getContext('2d');
@@ -83,9 +78,9 @@ const Game = ({ disableControls }) => {
                 characterSpriteSize.width, characterSpriteSize.height
             );
         }
-    }, [character, characterSprite]);
+    };
 
-    const drawMap = useCallback(() => {
+    const drawMap = () => {
         const canvas = canvasRef.current;
         if (canvas) {
             const context = canvas.getContext('2d');
@@ -100,9 +95,9 @@ const Game = ({ disableControls }) => {
                 context.drawImage(tallTile, 11 * tileSize, 4 * tileSize - tileSize, tileSize, tileSize * 2);
             }
         }
-    }, [showContent, specialTile, tallTile]);
+    };
 
-    const update = useCallback(() => {
+    const update = () => {
         const canvas = canvasRef.current;
         if (canvas) {
             const context = canvas.getContext('2d');
@@ -111,7 +106,7 @@ const Game = ({ disableControls }) => {
             drawMap();
             drawCharacter();
         }
-    }, [drawBackground, drawCharacter, drawMap]);
+    };
 
     const isCollision = (x, y) => {
         return walkableMap[y] && (walkableMap[y][x] === 0 || walkableMap[y][x] === 2 || walkableMap[y][x] === 3 || walkableMap[y][x] === 4 || walkableMap[y][x] === 5);
@@ -122,6 +117,7 @@ const Game = ({ disableControls }) => {
     };
 
     useEffect(() => {
+        const canvas = canvasRef.current;
         const handleKeyDown = (event) => {
             if (disableControls || showEmailForm) return;
 
@@ -189,13 +185,16 @@ const Game = ({ disableControls }) => {
                 case 's':
                     setShowContent(null);
                     break;
+                case 'm':
+                    toggleMusic();
+                    break;
                 default:
                     break;
             }
 
             if (newX !== character.x || newY !== character.y) {
                 if (!isCollision(newX, newY)) {
-                    if (newX >= 0 && newY >= 0 && newX < canvasRef.current.width / tileSize && newY < canvasRef.current.height / tileSize) {
+                    if (newX >= 0 && newY >= 0 && newX < canvas.width / tileSize && newY < canvas.height / tileSize) {
                         setCharacter({ x: newX, y: newY, direction: newDirection, frame: newFrame });
                     }
                 } else {
@@ -219,7 +218,7 @@ const Game = ({ disableControls }) => {
         return () => {
             document.removeEventListener('keydown', handleKeyDown);
         };
-    }, [character, showContent, disableControls, showEmailForm, background, characterSprite, update]);
+    }, [character, showContent, disableControls, showEmailForm, background, characterSprite]);
 
     const moveCharacterToTile = (targetX, targetY, content) => {
         const path = calculatePath(character.x, character.y, targetX, targetY);
@@ -298,12 +297,12 @@ const Game = ({ disableControls }) => {
                 {!showContent && !showEmailForm && <Bio handleEmailClick={() => setShowEmailForm(true)} />}
                 {showEmailForm && <EmailForm handleClose={() => setShowEmailForm(false)} />}
             </div>
+            <audio ref={audioRef} src={`${process.env.PUBLIC_URL}/assets/music.mp3`} loop></audio>
         </div>
     );
 };
 
 export default Game;
-
 
 
 
