@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/Xixo/static/css/main.7207e726.css",
-    "main.js": "/Xixo/static/js/main.3001c81b.js",
+    "main.css": "/Xixo/static/css/main.c9e78dbc.css",
+    "main.js": "/Xixo/static/js/main.b6529789.js",
     "index.html": "/Xixo/index.html",
-    "main.7207e726.css.map": "/Xixo/static/css/main.7207e726.css.map",
-    "main.3001c81b.js.map": "/Xixo/static/js/main.3001c81b.js.map"
+    "main.c9e78dbc.css.map": "/Xixo/static/css/main.c9e78dbc.css.map",
+    "main.b6529789.js.map": "/Xixo/static/js/main.b6529789.js.map"
   },
   "entrypoints": [
-    "static/css/main.7207e726.css",
-    "static/js/main.3001c81b.js"
+    "static/css/main.c9e78dbc.css",
+    "static/js/main.b6529789.js"
   ]
 }
