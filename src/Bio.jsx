@@ -17,7 +17,7 @@ const Bio = ({ handleEmailClick }) => {
             </div>
             <h2>Contact</h2>
             <p><strong>Phone:</strong> +351 91 44 33 135 </p>
-            <p><strong>Email:</strong> franciscopinheiro@gmail.com</p>
+            <p><strong>Email:</strong> franciscoecapinheiro@gmail.com</p>
         </div>
     );
 };
